@@ -9,6 +9,11 @@ from tkinter import *
 
 # If possible create GUI using OOP paradigm
 
+#Global Comment Variables
+COMMENT_1 = "text 1"
+COMMENT_2 = "text 2"
+COMMENT_3 = "text 3"
+
 class InputFrame(ttk.Frame):
     def __init__(self, container):
         super().__init__(container)
@@ -56,9 +61,25 @@ class InputFrame(ttk.Frame):
 
         # Create Issue/Quality Score 
         ttk.Label(self, text="Select Quality Score").grid(column=0, row=4, sticky=tk.W)
-        
+        #Create drop down
+        selected_score = tk.StringVar()
+        score_dropdown = ttk.Combobox(self, textvariable=selected_score)
+        score_dropdown['values'] = (1,2,3)
+        score_dropdown['state'] = 'readonly'
+        score_dropdown.grid(column=0, row=5, sticky=tk.W)
 
-    
+        def get_score(self):
+            s = selected_score.get()
+            print(s)
+
+        score_dropdown.bind('<<ComboboxSelected>>', get_score)
+
+        # Create entry field for email address
+        ttk.Label(self, text="Enter email address:").grid(column=0, row=6, sticky=tk.W)
+        email = ttk.Entry(self, width=30)
+        email.focus()
+        email.grid(column=0, row=7, sticky=tk.W)
+
         for widget in self.winfo_children():
             widget.grid(padx=0, pady=5)
 
@@ -71,7 +92,7 @@ class App(Tk):
     def __init__(self, screenName: str | None = None, baseName: str | None = None, className: str = "Tk", useTk: bool = True, sync: bool = False, use: str | None = None) -> None:
         super().__init__(screenName, baseName, className, useTk, sync, use)
 
-        self.title("NAB Application")
+        self.title("NAB Text Application")
         self.geometry("500x300")
         self.resizable(0,0)
 

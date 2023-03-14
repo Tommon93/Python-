@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tkinter.messagebox import showinfo
+from tkinter.messagebox import showerror
+import os
+import re
+#import win32com.client as win32
 
 ## Need to create Python GUI for work ##
 # Will need to use Tkinter 
@@ -13,6 +18,8 @@ from tkinter import *
 COMMENT_1 = "text 1"
 COMMENT_2 = "text 2"
 COMMENT_3 = "text 3"
+COMMENT_4 = "text 4"
+COMMENT_5 = "text 5"
 
 class InputFrame(ttk.Frame):
     def __init__(self, container):
@@ -68,24 +75,29 @@ class InputFrame(ttk.Frame):
         score_dropdown['state'] = 'readonly'
         score_dropdown.grid(column=0, row=5, sticky=tk.W)
 
-        def get_score(self):
-            s = selected_score.get()
-            print(s)
-
-        score_dropdown.bind('<<ComboboxSelected>>', get_score)
 
         # Create entry field for email address
         ttk.Label(self, text="Enter email address:").grid(column=0, row=6, sticky=tk.W)
-        email = ttk.Entry(self, width=30)
-        email.focus()
-        email.grid(column=0, row=7, sticky=tk.W)
+        
+        self.email = tk.StringVar()
+        email_entry = ttk.Entry(self, textvariable=self.email, width=30)
+        email_entry.focus()
+        email_entry.grid(column=0, row=7, sticky=tk.W)
+
+        
 
         for widget in self.winfo_children():
             widget.grid(padx=0, pady=5)
 
 
-class OutputFrame(ttk.Frame):
-    pass
+class OutputFrame(tk.Frame):
+    def __init__(self, container):
+        super().__init__(container)
+    # Create quality score function and binding here
+    # let a variable = class inputframe() to use email/quality score attributes. 
+        pass
+    
+    
 
 
 class App(Tk):
@@ -93,6 +105,7 @@ class App(Tk):
         super().__init__(screenName, baseName, className, useTk, sync, use)
 
         self.title("NAB Text Application")
+        #self.iconbitmap(os.path.dirname(os.path.abspath("__file__"))+"/nab_logo.ico")
         self.geometry("500x300")
         self.resizable(0,0)
 

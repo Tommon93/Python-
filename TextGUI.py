@@ -85,18 +85,25 @@ class InputFrame(ttk.Frame):
         email_entry.grid(column=0, row=7, sticky=tk.W)
 
         
-
         for widget in self.winfo_children():
             widget.grid(padx=0, pady=5)
 
 
-class OutputFrame(tk.Frame):
+class OutputFrame(ttk.Frame):
     def __init__(self, container):
         super().__init__(container)
-    # Create quality score function and binding here
-    # let a variable = class inputframe() to use email/quality score attributes. 
-        pass
-    
+
+        self.columnconfigure(0, weight=1)
+        self.__create_widgets()
+
+    def __create_widgets(self):
+        ttk.Button(self, text='Find Next').grid(column=0, row=0, sticky=tk.N)
+
+        
+        for widget in self.winfo_children():
+            widget.grid(padx=0, pady=5)
+
+        
     
 
 
@@ -106,7 +113,7 @@ class App(Tk):
 
         self.title("NAB Text Application")
         #self.iconbitmap(os.path.dirname(os.path.abspath("__file__"))+"/nab_logo.ico")
-        self.geometry("500x300")
+        self.geometry("550x300")
         self.resizable(0,0)
 
         # Root window layout

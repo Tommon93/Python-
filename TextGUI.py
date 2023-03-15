@@ -82,11 +82,11 @@ class InputFrame(ttk.Frame):
         self.email = tk.StringVar()
         email_entry = ttk.Entry(self, textvariable=self.email, width=30)
         email_entry.focus()
-        email_entry.grid(column=0, row=7, sticky=tk.W)
+        email_entry.grid(column=0, row=7, sticky=tk.W, columnspan=2)
 
         
         for widget in self.winfo_children():
-            widget.grid(padx=0, pady=5)
+            widget.grid(padx=5, pady=5)
 
 
 class OutputFrame(ttk.Frame):
@@ -103,19 +103,25 @@ class OutputFrame(ttk.Frame):
 
     def __create_widgets(self):
         
-        def get_email():
+        def get_text(): # Change to button function to generate text
             a = self.analyst_var.get()
             b = self.bo_var.get()
             s = self.score_var.get()
             e = self.email_var.get()
 
-            print(a,b,s,e)
-        
-        
-        ttk.Button(self, text="email:", command=get_email).grid(column=1, row=0)
+            if b == "Y":
+                standard_text.insert('1.0', COMMENT_1)
+            
+    
+
+        standard_text = tk.Text(self, height=20,  font=('Helvetica',10  ))
+        standard_text.grid(column=0, row=0)
+
+        generate_text = ttk.Button(self, text="Generate Text", command=get_text).grid(column=0, row=6, sticky=tk.W)
+
         
         for widget in self.winfo_children():
-            widget.grid(padx=0, pady=5)
+            widget.grid(padx=5, pady=5)
 
         
 
@@ -125,12 +131,12 @@ class App(Tk):
 
         self.title("NAB Text Application")
         #self.iconbitmap(os.path.dirname(os.path.abspath("__file__"))+"/nab_logo.ico")
-        self.geometry("550x300")
-        self.resizable(0,0)
+        self.geometry("600x320")
+        #self.resizable(0,0)
 
         # Root window layout
         self.columnconfigure(0, weight=4)
-        self.columnconfigure(1, weight=1)
+        self.columnconfigure(1, weight=4)
 
         self.__create_widgets()
     

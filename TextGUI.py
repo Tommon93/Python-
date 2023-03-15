@@ -37,15 +37,15 @@ class InputFrame(ttk.Frame):
         # Label to decide analyst
         ttk.Label(self, text="Please choose an analyst:").grid(column=0, row=0, sticky=tk.W)
         # Drop down for analysts 
-        selected_analyst = tk.StringVar()
-        analyst_dropdown = ttk.Combobox(self, textvariable=selected_analyst)
+        self.selected_analyst = tk.StringVar()
+        analyst_dropdown = ttk.Combobox(self, textvariable=self.selected_analyst)
         analyst_dropdown['values'] = ('Thomas', 'Sam', 'Michael')
         analyst_dropdown['state'] = 'readonly'
         analyst_dropdown.grid(column=0, row=1, sticky=tk.W)
 
         def get_analyst(self):
-            a = selected_analyst.get()
-            print(a)
+            a = self.selected_analyst.get()
+            return a 
         
         analyst_dropdown.bind('<<ComboboxSelected>>', get_analyst)
 
@@ -54,14 +54,14 @@ class InputFrame(ttk.Frame):
         ttk.Label(self, text="Pre-commencement Status:").grid(column=0, row=2, sticky=tk.W)
     
 
-        bo_status = tk.StringVar()
-        bo_option1 = ttk.Radiobutton(self, text="Yes", value="Y", variable=bo_status).grid(column=0, row=3, sticky=tk.W)
-        bo_option2 = ttk.Radiobutton(self, text="No", value="N", variable=bo_status).grid(column=0, row=3)
+        self.bo_status = tk.StringVar()
+        bo_option1 = ttk.Radiobutton(self, text="Yes", value="Y", variable=self.bo_status).grid(column=0, row=3, sticky=tk.W)
+        bo_option2 = ttk.Radiobutton(self, text="No", value="N", variable=self.bo_status).grid(column=0, row=3)
 
         # Temporary button to see if radio button get value works
-        @staticmethod
+        
         def selected_status():
-            b = bo_status.get()
+            b = self.bo_status.get()
             return b 
         
         #button = ttk.Button(self, text="get selected status", command=selected_status)
@@ -69,9 +69,9 @@ class InputFrame(ttk.Frame):
         # Create Issue/Quality Score 
         ttk.Label(self, text="Select Quality Score").grid(column=0, row=4, sticky=tk.W)
         #Create drop down
-        selected_score = tk.StringVar()
-        score_dropdown = ttk.Combobox(self, textvariable=selected_score)
-        score_dropdown['values'] = (1,2,3)
+        self.selected_score = tk.StringVar()
+        score_dropdown = ttk.Combobox(self, textvariable=self.selected_score)
+        score_dropdown['values'] = ("1","2","3")
         score_dropdown['state'] = 'readonly'
         score_dropdown.grid(column=0, row=5, sticky=tk.W)
 
@@ -90,26 +90,38 @@ class InputFrame(ttk.Frame):
 
 
 class OutputFrame(ttk.Frame):
-    def __init__(self, container):
+    def __init__(self, container, email, bo_status, selected_score, selected_analyst):
         super().__init__(container)
+
+        self.analyst_var = selected_analyst
+        self.email_var = email 
+        self.bo_var = bo_status
+        self.score_var = selected_score
 
         self.columnconfigure(0, weight=1)
         self.__create_widgets()
 
     def __create_widgets(self):
-        ttk.Button(self, text='Find Next').grid(column=0, row=0, sticky=tk.N)
+        
+        def get_email():
+            a = self.analyst_var.get()
+            b = self.bo_var.get()
+            s = self.score_var.get()
+            e = self.email_var.get()
 
+            print(a,b,s,e)
+        
+        
+        ttk.Button(self, text="email:", command=get_email).grid(column=1, row=0)
         
         for widget in self.winfo_children():
             widget.grid(padx=0, pady=5)
 
         
-    
-
 
 class App(Tk):
-    def __init__(self, screenName: str | None = None, baseName: str | None = None, className: str = "Tk", useTk: bool = True, sync: bool = False, use: str | None = None) -> None:
-        super().__init__(screenName, baseName, className, useTk, sync, use)
+    def __init__(self):
+        super().__init__()
 
         self.title("NAB Text Application")
         #self.iconbitmap(os.path.dirname(os.path.abspath("__file__"))+"/nab_logo.ico")
@@ -123,13 +135,14 @@ class App(Tk):
         self.__create_widgets()
     
     def __create_widgets(self):
-        # create the input frame
+         # create the input frame
         input_frame = InputFrame(self)
         input_frame.grid(column=0, row=0)
 
-        # Create the output frame
-        output_frame = OutputFrame(self)
+        # Create the output frame after input_frame has been initialized
+        output_frame = OutputFrame(self, input_frame.email, input_frame.bo_status, input_frame.selected_score, input_frame.selected_analyst)
         output_frame.grid(column=1, row=0)
+
 
     
 if __name__=="__main__":

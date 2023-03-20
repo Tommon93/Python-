@@ -15,11 +15,11 @@ import re
 # If possible create GUI using OOP paradigm
 
 #Global Comment Variables
-COMMENT_1 = "text 1"
-COMMENT_2 = "text 2"
-COMMENT_3 = "text 3"
-COMMENT_4 = "text 4"
-COMMENT_5 = "text 5"
+COMMENT_1 = "text 1 "
+COMMENT_2 = "text 2 "
+COMMENT_3 = "text 3 "
+COMMENT_4 = "text 4 "
+COMMENT_5 = "text 5 "
 
 class InputFrame(ttk.Frame):
     def __init__(self, container):
@@ -99,6 +99,7 @@ class OutputFrame(ttk.Frame):
         self.score_var = selected_score
 
         self.columnconfigure(0, weight=1)
+        
         self.__create_widgets()
 
     def __create_widgets(self):
@@ -109,17 +110,31 @@ class OutputFrame(ttk.Frame):
             s = self.score_var.get()
             e = self.email_var.get()
 
-            if b == "Y":
+            if b == "Y" and s == "1":
                 standard_text.insert('1.0', COMMENT_1)
-            
+            elif b == "Y" and s == "2": 
+                standard_text.insert('1.0', COMMENT_2)
+            elif b == "Y" and s == "3":
+                standard_text.insert('1.0', COMMENT_3)
+            elif b == "N" and s == "1":
+                standard_text.insert('1.0', COMMENT_4)
+            elif b == "N" and s == "2":
+                standard_text.insert('1.0', COMMENT_5)
+            else:
+                standard_text.insert('1.0', COMMENT_1)
     
 
         standard_text = tk.Text(self, height=20,  font=('Helvetica',10  ))
-        standard_text.grid(column=0, row=0)
+        standard_text.grid(column=0, row=0, columnspan=3)
 
-        generate_text = ttk.Button(self, text="Generate Text", command=get_text).grid(column=0, row=6, sticky=tk.W)
+        generate_text = ttk.Button(self, text="Generate Text", command=get_text).grid(column=0, row=6, sticky=tk.E)
 
+        send_email = ttk.Button(self, text="Send Email").grid(column=1, row=6, sticky=tk.W)
+
+        clear_text = ttk.Button(self, text="Clear Text", command=lambda: standard_text.delete('1.0', END))
+        clear_text.grid(column=2, row=6)
         
+
         for widget in self.winfo_children():
             widget.grid(padx=5, pady=5)
 
@@ -131,8 +146,8 @@ class App(Tk):
 
         self.title("NAB Text Application")
         #self.iconbitmap(os.path.dirname(os.path.abspath("__file__"))+"/nab_logo.ico")
-        self.geometry("600x320")
-        #self.resizable(0,0)
+        self.geometry("600x280")
+        self.resizable(0,0)
 
         # Root window layout
         self.columnconfigure(0, weight=4)
